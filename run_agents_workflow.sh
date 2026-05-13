@@ -12,7 +12,7 @@ source "$SCRIPT_DIR/venv/bin/activate"
 
 # Install packages if not already installed
 pip install --quiet strands-agents strands-agents-tools
-TRACECTRL_SDK="/Users/dylanchan/Library/Mobile Documents/com~apple~CloudDocs/INTERN GRIND/Cloudsine/tracectrl/sdk"
+TRACECTRL_SDK="<TRACECTRL_SDK>"
 pip install --quiet "$TRACECTRL_SDK/tracectrl"
 pip install --quiet "$TRACECTRL_SDK/tracectrl-instrumentation-strands"
 
