@@ -12,9 +12,8 @@ source "$SCRIPT_DIR/venv/bin/activate"
 
 # Install packages if not already installed
 pip install --quiet "strands-agents[gemini]" strands-agents-tools
-TRACECTRL_SDK="PATH_TO_TRACECTRL_SDK"
-pip install --quiet "$TRACECTRL_SDK/tracectrl"
-pip install --quiet "$TRACECTRL_SDK/tracectrl-instrumentation-strands"
+pip install --quiet tracectrl
+pip install --quiet tracectrl-instrumentation-strands
 
 # Load env vars
 set -a

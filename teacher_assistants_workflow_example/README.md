@@ -9,7 +9,6 @@ A **TeachAssist** orchestrator routes student queries to the most appropriate sp
 - Python 3.10+
 - [Google AI Studio API key](https://aistudio.google.com/apikey)
 - TraceCtrl running locally (OTLP endpoint on port 4317)
-- TraceCtrl SDK cloned locally
 
 ## Setup
 
@@ -39,15 +38,7 @@ TRACECTRL_ENVIRONMENT=demo
 
 Replace `your_google_ai_studio_key` with your API key from [Google AI Studio](https://aistudio.google.com/apikey) and set `GOOGLE_MODEL_ID` to the model you want to use (e.g. `gemini-3.1-flash-lite`, `gemini-2.0-flash`).
 
-### 3. Set the TraceCtrl SDK path
-
-Edit `run_agents_workflow.sh` and replace `<TRACECTRL_SDK>` with the path to your local TraceCtrl SDK:
-
-```bash
-TRACECTRL_SDK="<PATH_TO_TRACECTRL_SDK>"
-```
-
-### 4. Make the script executable
+### 3. Make the script executable
 
 ```bash
 chmod +x run_agents_workflow.sh
