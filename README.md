@@ -81,3 +81,5 @@ Type `exit` to quit.
 ### 4. View the Topology
 
 Open the TraceCtrl UI and navigate to the **Topology** view to see the full agent workflow — each agent, tool call, and LLM invocation traced in real time.
+
+![Topology](topology.png)
