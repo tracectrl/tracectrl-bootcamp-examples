@@ -17,7 +17,6 @@ from strands_tools import file_read, file_write, editor
 from english_assistant import english_assistant
 from language_assistant import language_assistant
 from math_assistant import math_assistant
-from computer_science_assistant import computer_science_assistant
 from no_expertise import general_assistant
 
 tracectrl.configure(
@@ -70,7 +69,7 @@ teacher_agent = Agent(
     system_prompt=TEACHER_SYSTEM_PROMPT,
     model=model,
     callback_handler=None,
-    tools=[math_assistant, language_assistant, english_assistant, computer_science_assistant, general_assistant],
+    tools=[math_assistant, language_assistant, english_assistant, general_assistant],
 )
 tag_agent(teacher_agent)
 
