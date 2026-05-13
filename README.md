@@ -9,8 +9,8 @@
   |-----------|----------|---------------|                                                                                                                                             
   | [`research_workflow_example/`](./research_workflow_example) | Researcher → Analyst → Writer (3 agents, 1 tool) | Sequential hand-off via tool calls; web research with             
   `http_request`; fact-checking |                                                                                                                                                      
-  | [`teacher_assistants_workflow_example/`](./teacher_assistants_workflow_example) | TeachAssist orchestrator → 5 subject specialists | Classifier-style routing; one orchestrator    
-  delegates to MathWizard, EnglishMaster, LanguageAssistant, ComputerScienceExpert, or GeneralAssist |                                                                                 
+  | [`teacher_assistants_workflow_example/`](./teacher_assistants_workflow_example) | TeachAssist orchestrator → 4 subject specialists | Classifier-style routing; one orchestrator    
+  delegates to MathWizard, EnglishMaster, LanguageAssistant or GeneralAssist |                                                                                 
                                                                                                                                                                                      
   Each example is self-contained — see its README for setup and run instructions.                                                                                                      
                                                                                                                                                                                      
