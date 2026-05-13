@@ -11,8 +11,8 @@ fi
 source "$SCRIPT_DIR/venv/bin/activate"
 
 # Install packages if not already installed
-pip install --quiet strands-agents strands-agents-tools
-TRACECTRL_SDK="<TRACECTRL_SDK>"
+pip install --quiet "strands-agents[gemini]" strands-agents-tools
+TRACECTRL_SDK="PATH_TO_TRACECTRL_SDK"
 pip install --quiet "$TRACECTRL_SDK/tracectrl"
 pip install --quiet "$TRACECTRL_SDK/tracectrl-instrumentation-strands"
 
