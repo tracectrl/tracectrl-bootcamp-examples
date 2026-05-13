@@ -2,7 +2,7 @@
 
 This example demonstrates a multi-agent orchestration workflow using [Strands Agents](https://github.com/strands-agents/docs), monitored with [TraceCtrl](https://tracectrl.io).
 
-A **TeachAssist** orchestrator routes student queries to the most appropriate specialist agent — **MathWizard**, **EnglishMaster**, **LanguageAssistant**, **ComputerScienceExpert**, or **GeneralAssist** — with every routing decision and agent call visible in the TraceCtrl UI.
+A **TeachAssist** orchestrator routes student queries to the most appropriate specialist agent — **MathWizard**, **EnglishMaster**, **LanguageAssistant** or **GeneralAssist** — with every routing decision and agent call visible in the TraceCtrl UI.
 
 ## Prerequisites
 
@@ -30,7 +30,7 @@ Edit `.env` and fill in your credentials:
 
 ```env
 GOOGLE_API_KEY=your_google_ai_studio_key
-GOOGLE_MODEL_ID=gemini-2.0-flash
+GOOGLE_MODEL_ID=gemini-3.1-flash-lite
 
 TRACECTRL_ENDPOINT=http://localhost:4317
 TRACECTRL_SERVICE_NAME=teachers-assistant
@@ -69,14 +69,39 @@ The script will automatically create a virtual environment and install all requi
 
 ### 3. Enter your question
 
-At the prompt, ask any subject-area question and TeachAssist will route it to the right specialist:
+At the prompt, ask any subject-area question and TeachAssist will route it to the right specialist.
 
-```
-> What is the derivative of x squared?
-> Translate "good morning" to Japanese
-> Explain recursion with an example in Python
-> What is the theme of Romeo and Juliet?
-```
+**Prompt 1:** `What is 1 + 1?`
+
+TeachAssist routes this to **MathWizard**.
+
+![Topology after prompt 1](topology1.png)
+
+---
+
+**Prompt 2:** `Define Apple`
+
+TeachAssist routes this to **GeneralAssist**.
+
+![Topology after prompt 2](topology2.png)
+
+---
+
+**Prompt 3:** `Write me a poem`
+
+TeachAssist routes this to **EnglishMaster**.
+
+![Topology after prompt 3](topology3.png)
+
+---
+
+**Prompt 4:** `Translate hello to French`
+
+TeachAssist routes this to **LanguageAssistant**.
+
+![Topology after prompt 4](topology4.png)
+
+---
 
 Type `exit` to quit.
 
@@ -92,5 +117,4 @@ Open the TraceCtrl UI and navigate to the **Topology** view to see the full agen
 | MathWizard | `math_assistant.py` | Arithmetic, algebra, geometry, statistics |
 | EnglishMaster | `english_assistant.py` | Writing, grammar, literature, composition |
 | LanguageAssistant | `language_assistant.py` | Translation and language learning |
-| ComputerScienceExpert | `computer_science_assistant.py` | Programming, algorithms, data structures |
 | GeneralAssist | `no_expertise.py` | General knowledge outside specialist domains |
