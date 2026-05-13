@@ -7,7 +7,7 @@ A **Researcher**, **Analyst**, and **Writer** agent work in sequence to research
 ## Prerequisites
 
 - Python 3.10+
-- AWS account with [Amazon Bedrock model access](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) enabled
+- [Google AI Studio API key](https://aistudio.google.com/apikey)
 - TraceCtrl running locally (OTLP endpoint on port 4317)
 - TraceCtrl SDK cloned locally
 
@@ -29,14 +29,15 @@ cp .env.example .env
 Edit `.env` and fill in your credentials:
 
 ```env
-AWS_ACCESS_KEY_ID=your_access_key
-AWS_SECRET_ACCESS_KEY=your_secret_key
-AWS_DEFAULT_REGION=us-east-1
+GOOGLE_API_KEY=your_google_ai_studio_key
+GOOGLE_MODEL_ID=gemini-3.1-flash-lite
 
 TRACECTRL_ENDPOINT=http://localhost:4317
 TRACECTRL_SERVICE_NAME=agents-workflow
 TRACECTRL_ENVIRONMENT=demo
 ```
+
+Replace `your_google_ai_studio_key` with your API key from [Google AI Studio](https://aistudio.google.com/apikey) and set `GOOGLE_MODEL_ID` to the model you want to use (e.g. `gemini-3.1-flash-lite`, `gemini-2.0-flash`).
 
 ### 3. Set the TraceCtrl SDK path
 

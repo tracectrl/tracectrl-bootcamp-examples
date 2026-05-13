@@ -31,6 +31,7 @@ from tracectrl import tag_agent
 from tracectrl.instrumentation.strands import StrandsInstrumentor
 
 from strands import Agent, tool
+from strands.models.gemini import GeminiModel
 from strands_tools import http_request
 
 tracectrl.configure(
@@ -39,6 +40,12 @@ tracectrl.configure(
 )
 StrandsInstrumentor().instrument()
 
+model = GeminiModel(
+    client_args={
+        "api_key": os.getenv("GOOGLE_API_KEY"),
+    },
+    model_id=os.getenv("GOOGLE_MODEL_ID", "gemini-3.1-flash-lite"),
+)
 
 @tool
 def call_writer(analysis: str) -> str:
@@ -55,6 +62,7 @@ def call_writer(analysis: str) -> str:
 
     writer_agent = Agent(
         name="Writer",
+        model=model,
         system_prompt=(
             "You are a Writer Agent that creates clear reports. "
             "1. For fact-checks: State whether claims are true or false "
@@ -91,6 +99,7 @@ def call_analyst(research_findings: str) -> str:
 
     analyst_agent = Agent(
         name="Analyst",
+        model=model,
         system_prompt=(
             "You are an Analyst Agent that verifies information. "
             "1. For factual claims: Rate accuracy from 1-5 and correct if needed "
@@ -133,6 +142,7 @@ def run_research_workflow(user_input):
 
     researcher_agent = Agent(
         name="Researcher",
+        model=model,
         system_prompt=(
             "You are a Researcher Agent that gathers information from the web. "
             "1. Determine if the input is a research query or factual claim "
@@ -179,7 +189,7 @@ if __name__ == "__main__":
 
             # Process the input through the workflow of agents
             final_report = run_research_workflow(user_input)
-        except KeyboardInterrupt:
+        except (KeyboardInterrupt, EOFError):
             print("\n\nExecution interrupted. Exiting...")
             break
         except Exception as e:
