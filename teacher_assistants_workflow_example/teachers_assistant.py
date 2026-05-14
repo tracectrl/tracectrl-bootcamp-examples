@@ -83,10 +83,10 @@ tag_agent(teacher_agent)
 #   2. Import the agent object and uncomment the wire-in below.
 # The judge uses the same Gemini model — GOOGLE_API_KEY is already in scope.
 
-from tracectrl.guardrails import wrap_agent_with_guardrails
-from guardrails import pii_in_query_guard, code_execution_safety_guard
+#from tracectrl.guardrails import wrap_agent_with_guardrails
+#from guardrails import pii_in_query_guard, code_execution_safety_guard
 
-wrap_agent_with_guardrails(teacher_agent, [pii_in_query_guard])
+#wrap_agent_with_guardrails(teacher_agent, [pii_in_query_guard])
 # ---------------------------------------------------------------------------
 
 
