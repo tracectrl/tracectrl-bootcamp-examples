@@ -17,10 +17,13 @@ The full rubric prompt + concrete test inputs live at the top of each file.
 
 ```python
 from tracectrl.guardrails import Guardrail, wrap_agent_with_guardrails
-from strands.models import BedrockModel
+from strands.models.gemini import GeminiModel
+import os
 
-judge = BedrockModel(model_id="us.anthropic.claude-sonnet-4-5-20250929-v1:0",
-                    region_name="us-east-1")
+judge = GeminiModel(
+    client_args={"api_key": os.getenv("GOOGLE_API_KEY")},
+    model_id=os.getenv("GOOGLE_MODEL_ID", "gemini-3.1-flash-lite"),
+)
 
 my_guard = Guardrail(
     name="my_guard",
@@ -40,27 +43,8 @@ in `judge_prompt`), **when** to check (`timing`), and **how loud** to be
 when it fails (`severity` + `on_violation`). The SDK handles span
 attribution, evidence capture, and registration in `/guardrails`.
 
-## ⚠️ The judge runs on AWS Bedrock
-
-The TraceCtrl SDK invokes the judge via Bedrock's `converse` API.
-This bootcamp's agents run on Gemini (Google AI Studio is free); the
-**judge is a separate Bedrock call**. To run guardrails for real you
-need:
-
-```bash
-aws configure       # AWS access key + secret, region us-east-1
-# AND enable model access for the chosen Claude model in the AWS Bedrock console
-```
-
-No Bedrock access? Two options:
-
-1. **Read-only mode** — open the files, understand the pattern, skip the
-   wire-in step. You'll still see how `Guardrail` is defined and how the
-   rubric is structured.
-2. **Custom judge** — replace `BedrockModel` with a thin class that calls
-   your preferred LLM and exposes `.model_id` + `.region_name` attributes.
-   The SDK's internal `invoke_judge` hard-codes boto3, so this requires
-   a small SDK fork. Out of scope for the bootcamp.
+The judge uses the **same Gemini model your agents use** — same
+`GOOGLE_API_KEY`, no extra credentials to provision.
 
 ## Wiring in (when you're ready)
 

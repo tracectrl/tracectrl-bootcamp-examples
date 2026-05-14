@@ -175,7 +175,7 @@ def run_research_workflow(user_input):
 #   1. Lift `analyst_agent` and `writer_agent` to module scope (currently
 #      they're constructed inside the @tool functions above).
 #   2. Uncomment the block below.
-#   3. Make sure `aws configure` is set — the judge runs on Bedrock.
+# The judge uses the same Gemini model — GOOGLE_API_KEY is already in scope.
 #
 # from tracectrl.guardrails import wrap_agent_with_guardrails
 # from guardrails import source_reliability_guard, fact_check_consistency_guard

@@ -81,7 +81,7 @@ tag_agent(teacher_agent)
 #      (currently the agents are constructed inside the tool function bodies
 #      in math_assistant.py / no_expertise.py / etc).
 #   2. Import the agent object and uncomment the wire-in below.
-#   3. Make sure `aws configure` is set — the judge runs on Bedrock.
+# The judge uses the same Gemini model — GOOGLE_API_KEY is already in scope.
 #
 # from tracectrl.guardrails import wrap_agent_with_guardrails
 # from guardrails import pii_in_query_guard, code_execution_safety_guard

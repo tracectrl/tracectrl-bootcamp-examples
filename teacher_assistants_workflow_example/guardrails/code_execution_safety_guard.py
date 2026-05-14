@@ -25,17 +25,13 @@ To wire it in, see guardrails/__init__.py and the bottom of teachers_assistant.p
 
 from tracectrl.guardrails import Guardrail
 
-# Judge uses Bedrock — see pii_in_query_guard.py for the rationale.
-from strands.models import BedrockModel
-
+# Judge runs the same Gemini model the agents use — no extra credentials.
 import os
+from strands.models.gemini import GeminiModel
 
-_JUDGE = BedrockModel(
-    model_id=os.getenv(
-        "TRACECTRL_GUARDRAIL_JUDGE_MODEL",
-        "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
-    ),
-    region_name=os.getenv("AWS_REGION", "us-east-1"),
+_JUDGE = GeminiModel(
+    client_args={"api_key": os.getenv("GOOGLE_API_KEY")},
+    model_id=os.getenv("GOOGLE_MODEL_ID", "gemini-3.1-flash-lite"),
 )
 
 
