@@ -169,6 +169,22 @@ def run_research_workflow(user_input):
     return final_report
 
 
+# ---------------------------------------------------------------------------
+# Optional: wrap the Analyst / Writer with TraceCtrl SDK guardrails.
+# See guardrails/README.md for the pattern + test prompts. To enable:
+#   1. Lift `analyst_agent` and `writer_agent` to module scope (currently
+#      they're constructed inside the @tool functions above).
+#   2. Uncomment the block below.
+#   3. Make sure `aws configure` is set — the judge runs on Bedrock.
+#
+# from tracectrl.guardrails import wrap_agent_with_guardrails
+# from guardrails import source_reliability_guard, fact_check_consistency_guard
+#
+# wrap_agent_with_guardrails(writer_agent,  [source_reliability_guard])
+# wrap_agent_with_guardrails(analyst_agent, [fact_check_consistency_guard])
+# ---------------------------------------------------------------------------
+
+
 if __name__ == "__main__":
     # Print welcome message
     print("\nAgentic Workflow: Research Assistant\n")
