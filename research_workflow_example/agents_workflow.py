@@ -47,6 +47,25 @@ model = GeminiModel(
     model_id=os.getenv("GOOGLE_MODEL_ID", "gemini-3.1-flash-lite"),
 )
 
+# Agents are constructed at module scope so a TraceCtrl SDK guardrail can be
+# wired in by uncommenting the block at the bottom of this file — no
+# refactor needed. Strands tool-callable agents normally get built inside
+# their @tool wrappers; we lift them up front here to keep the bootcamp's
+# guardrail-enable flow a single uncomment.
+writer_agent = Agent(
+    name="Writer",
+    model=model,
+    system_prompt=(
+        "You are a Writer Agent that creates clear reports. "
+        "1. For fact-checks: State whether claims are true or false "
+        "2. For research: Present key insights in a logical structure "
+        "3. Keep reports under 500 words with brief source mentions"
+    ),
+    callback_handler=None,
+)
+tag_agent(writer_agent)
+
+
 @tool
 def call_writer(analysis: str) -> str:
     """
@@ -59,26 +78,26 @@ def call_writer(analysis: str) -> str:
         The final report produced by the Writer Agent.
     """
     print("Step 3: Writer Agent creating final report...")
-
-    writer_agent = Agent(
-        name="Writer",
-        model=model,
-        system_prompt=(
-            "You are a Writer Agent that creates clear reports. "
-            "1. For fact-checks: State whether claims are true or false "
-            "2. For research: Present key insights in a logical structure "
-            "3. Keep reports under 500 words with brief source mentions"
-        ),
-        callback_handler=None,
-    )
-    tag_agent(writer_agent)
-
-    result = writer_agent(
-        f"Create a report based on this analysis:\n\n{analysis}"
-    )
-
+    result = writer_agent(f"Create a report based on this analysis:\n\n{analysis}")
     print("Report creation complete")
     return str(result)
+
+
+analyst_agent = Agent(
+    name="Analyst",
+    model=model,
+    system_prompt=(
+        "You are an Analyst Agent that verifies information. "
+        "1. For factual claims: Rate accuracy from 1-5 and correct if needed "
+        "2. For research queries: Identify 3-5 key insights "
+        "3. Evaluate source reliability and keep analysis under 400 words "
+        "4. When your analysis is complete, call the call_writer tool with your analysis "
+        "to produce the final report."
+    ),
+    callback_handler=None,
+    tools=[call_writer],
+)
+tag_agent(analyst_agent)
 
 
 @tool
@@ -96,28 +115,10 @@ def call_analyst(research_findings: str) -> str:
     print("Analysis complete")
     print("Passing analysis to Writer Agent...\n")
     print("Step 2: Analyst Agent analyzing findings...")
-
-    analyst_agent = Agent(
-        name="Analyst",
-        model=model,
-        system_prompt=(
-            "You are an Analyst Agent that verifies information. "
-            "1. For factual claims: Rate accuracy from 1-5 and correct if needed "
-            "2. For research queries: Identify 3-5 key insights "
-            "3. Evaluate source reliability and keep analysis under 400 words "
-            "4. When your analysis is complete, call the call_writer tool with your analysis "
-            "to produce the final report."
-        ),
-        callback_handler=None,
-        tools=[call_writer],
-    )
-    tag_agent(analyst_agent)
-
     result = analyst_agent(
         f"Analyze these findings:\n\n{research_findings}\n\n"
         "When you have finished your analysis, call call_writer with your analysis."
     )
-
     return str(result)
 
 
@@ -171,16 +172,13 @@ def run_research_workflow(user_input):
 
 # ---------------------------------------------------------------------------
 # Optional: wrap the Analyst / Writer with TraceCtrl SDK guardrails.
-# See guardrails/README.md for the pattern + test prompts. To enable:
-#   1. Lift `analyst_agent` and `writer_agent` to module scope (currently
-#      they're constructed inside the @tool functions above).
-#   2. Uncomment the block below.
-# The judge uses the same Gemini model — GOOGLE_API_KEY is already in scope.
+# To enable, uncomment the three lines below. The judge uses the same
+# Gemini model — GOOGLE_API_KEY is already in scope. See
+# guardrails/README.md for the pattern + test prompts.
 #
 # from tracectrl.guardrails import wrap_agent_with_guardrails
 # from guardrails import source_reliability_guard, fact_check_consistency_guard
-#
-# wrap_agent_with_guardrails(writer_agent,  [source_reliability_guard])
+# wrap_agent_with_guardrails(writer_agent, [source_reliability_guard])
 # wrap_agent_with_guardrails(analyst_agent, [fact_check_consistency_guard])
 # ---------------------------------------------------------------------------
 
