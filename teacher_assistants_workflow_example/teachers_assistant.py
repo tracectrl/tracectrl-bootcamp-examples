@@ -75,18 +75,16 @@ tag_agent(teacher_agent)
 
 
 # ---------------------------------------------------------------------------
-# Optional: wrap TeachAssist (and a specialist) with TraceCtrl SDK guardrails.
-# See guardrails/README.md for the pattern + test prompts. To enable:
-#   1. Lift the underlying agent objects out of the specialist @tool wrappers
-#      (currently the agents are constructed inside the tool function bodies
-#      in math_assistant.py / no_expertise.py / etc).
-#   2. Import the agent object and uncomment the wire-in below.
-# The judge uses the same Gemini model — GOOGLE_API_KEY is already in scope.
-
-#from tracectrl.guardrails import wrap_agent_with_guardrails
-#from guardrails import pii_in_query_guard, code_execution_safety_guard
-
-#wrap_agent_with_guardrails(teacher_agent, [pii_in_query_guard])
+# Optional: wrap TeachAssist (and the GeneralAssist specialist) with TraceCtrl
+# SDK guardrails. To enable, uncomment the four lines below. The judge uses
+# the same Gemini model — GOOGLE_API_KEY is already in scope. See
+# guardrails/README.md for the pattern + test prompts.
+#
+# from tracectrl.guardrails import wrap_agent_with_guardrails
+# from guardrails import pii_in_query_guard, code_execution_safety_guard
+# from no_expertise import general_assistant_agent
+# wrap_agent_with_guardrails(teacher_agent, [pii_in_query_guard])
+# wrap_agent_with_guardrails(general_assistant_agent, [code_execution_safety_guard])
 # ---------------------------------------------------------------------------
 
 

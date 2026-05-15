@@ -39,37 +39,39 @@ model = GeminiModel(
 )
 
 
+# Lifted to module scope so a TraceCtrl SDK guardrail can wrap it from
+# teachers_assistant.py with a single uncomment — no refactor needed.
+general_assistant_agent = Agent(
+    name="GeneralAssist",
+    system_prompt=GENERAL_ASSISTANT_SYSTEM_PROMPT,
+    model=model,
+    tools=[],  # No specialized tools needed for general knowledge
+)
+tag_agent(general_assistant_agent)
+
+
 @tool
 def general_assistant(query: str) -> str:
     """
     Handle general knowledge queries that fall outside specialized domains.
     Provides concise, accurate responses to non-specialized questions.
-    
+
     Args:
         query: The user's general knowledge question
-        
+
     Returns:
         A concise response to the general knowledge query
     """
-    # Format the query for the agent
     formatted_query = f"Answer this general knowledge question concisely, remembering to start by acknowledging that you are not an expert in this specific area: {query}"
-    
+
     try:
         print("Routed to General Assistant")
-        general_agent = Agent(
-            name="GeneralAssist",
-            system_prompt=GENERAL_ASSISTANT_SYSTEM_PROMPT,
-            model=model,
-            tools=[],  # No specialized tools needed for general knowledge
-        )
-        tag_agent(general_agent)
-        agent_response = general_agent(formatted_query)
+        agent_response = general_assistant_agent(formatted_query)
         text_response = str(agent_response)
 
         if len(text_response) > 0:
             return text_response
-        
+
         return "Sorry, I couldn't provide an answer to your question."
     except Exception as e:
-        # Return error message
         return f"Error processing your question: {str(e)}"
