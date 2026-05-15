@@ -16,7 +16,7 @@
                                                                                                                                                                                      
   ## Prerequisites (shared)                                                                                                                                                            
                                                                                                                                                                                      
-  - **Python 3.10+**                     
+  - **Python 3.10+** **or** [**uv**](https://docs.astral.sh/uv/getting-started/installation/) — each example ships both a `run_agents_workflow.sh` (pip) and `run_agents_workflow_uv.sh` (uv) runner; pick whichever you have.
   - **Google AI Studio API key** — free, no credit card. Get one at [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
   - **TraceCtrl stack running locally** with the OTLP collector accepting traces on `:4317`. Follow [Part 2 of the bootcamp                                                            
   guide](https://docs.tracectrl.io/bootcamp/strands-guide#part-2-start-the-tracectrl-stack).                                                                                           

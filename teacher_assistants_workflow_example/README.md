@@ -6,7 +6,7 @@ A **TeachAssist** orchestrator routes student queries to the most appropriate sp
 
 ## Prerequisites
 
-- Python 3.10+
+- Python 3.10+ **or** [uv](https://docs.astral.sh/uv/getting-started/installation/) (either works — pick whichever you have)
 - [Google AI Studio API key](https://aistudio.google.com/apikey)
 - TraceCtrl running locally (OTLP endpoint on port 4317)
 
@@ -41,7 +41,7 @@ Replace `your_google_ai_studio_key` with your API key from [Google AI Studio](ht
 ### 3. Make the script executable
 
 ```bash
-chmod +x run_agents_workflow.sh
+chmod +x run_agents_workflow.sh run_agents_workflow_uv.sh
 ```
 
 ## Running the Example
@@ -52,11 +52,21 @@ Make sure your TraceCtrl instance is up and accepting traces on port 4317 before
 
 ### 2. Execute the script
 
+Pick the runner that matches your environment — both create a local virtual environment and install dependencies on first run, then reuse it on subsequent runs.
+
+**With pip (Python 3.10+):**
+
 ```bash
 bash run_agents_workflow.sh
 ```
 
-The script will automatically create a virtual environment and install all required dependencies on first run.
+**With [uv](https://docs.astral.sh/uv/getting-started/installation/):**
+
+```bash
+bash run_agents_workflow_uv.sh
+```
+
+The two runners use separate venv directories (`venv/` for pip, `.venv/` for uv) so they don't conflict if you try both.
 
 ### 3. Enter your question
 
