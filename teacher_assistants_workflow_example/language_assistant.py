@@ -30,12 +30,26 @@ Maintain accuracy while ensuring translations are natural and contextually appro
 
 import os
 from strands.models.gemini import GeminiModel
-model = GeminiModel(
-    client_args={
-        "api_key": os.getenv("GOOGLE_API_KEY"),
-    },
-    model_id=os.getenv("GOOGLE_MODEL_ID", "gemini-3.1-flash-lite"),
-)
+
+
+def _make_gemini_model() -> GeminiModel:
+    """Pick AI Studio (API key) or Vertex AI (service account) based on env."""
+    if os.getenv("GOOGLE_GENAI_USE_VERTEXAI", "").lower() == "true":
+        return GeminiModel(
+            client_args={
+                "vertexai": True,
+                "project": os.environ["GOOGLE_CLOUD_PROJECT"],
+                "location": os.getenv("GOOGLE_CLOUD_LOCATION", "global"),
+            },
+            model_id=os.getenv("GOOGLE_MODEL_ID", "gemini-3.1-flash-lite-preview"),
+        )
+    return GeminiModel(
+        client_args={"api_key": os.environ["GOOGLE_API_KEY"]},
+        model_id=os.getenv("GOOGLE_MODEL_ID", "gemini-3.1-flash-lite"),
+    )
+
+
+model = _make_gemini_model()
 
 @tool
 def language_assistant(query: str) -> str:

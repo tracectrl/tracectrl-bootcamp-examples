@@ -22,6 +22,7 @@ source "$SCRIPT_DIR/.venv/bin/activate"
 uv pip install --quiet "strands-agents[gemini]" strands-agents-tools
 uv pip install --quiet tracectrl
 uv pip install --quiet tracectrl-instrumentation-strands
+uv pip install --quiet google-cloud-aiplatform
 
 # Load env vars
 set -a
